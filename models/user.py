@@ -1,5 +1,6 @@
 import uuid
-from sqlalchemy import Column, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
+from sqlalchemy.sql import func
 
 from database import Base
 
@@ -15,6 +16,8 @@ class User(Base):
 
     first_name = Column(String)
     last_name = Column(String)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     is_active = Column(Boolean, default=True, index=True)
 

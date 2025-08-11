@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
@@ -8,6 +9,11 @@ class BaseUserCreate(BaseModel):
     username: str
     first_name: str | None = None
     last_name: str | None = None
+
+
+class LoginUser(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=64)
 
 
 class UserCreate(BaseUserCreate):
@@ -37,6 +43,12 @@ class UserRead(BaseModel):
     first_name: str | None
     last_name: str | None
     is_active: bool
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class User(UserRead):
+    pass
